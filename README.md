@@ -1,10 +1,10 @@
-# 🎉 SIGES-MINPOSTEL - Projet Complet
+#  SIGES-MINPOSTEL - Projet Complet
 
 ## Résumé du projet
 
 **SIGES-MINPOSTEL** est une plateforme web de **réservation de salles de réunion** pour le **Ministère des Postes et Télécommunications du Cameroun**.
 
-### 🎯 Objectifs
+###  Objectifs
 
 - ✅ Centraliser la gestion des salles de réunion
 - ✅ Automatiser le processus de réservation
@@ -14,15 +14,15 @@
 
 ---
 
-## 📚 Structure du Projet
+##  Structure du Projet
 
 ```
 SIGES-MINPOSTEL/
 ├── .github/
 │   └── agents/
-│       ├── backend-architect.agent.md       # 🏗️ Agent Backend
-│       └── frontend-developer.agent.md      # 🖥️ Agent Frontend
-├── backend/                                  # ← 📍 VOUS ÊTES ICI
+│       ├── backend-architect.agent.md       # Agent Backend
+│       └── frontend-developer.agent.md      #  Agent Frontend
+├── backend/                                  # ←  VOUS ÊTES ICI
 │   ├── config/                    # Configuration (DB, JWT)
 │   ├── controllers/               # Logique métier
 │   ├── middlewares/               # Auth, validation, rôles
@@ -36,7 +36,7 @@ SIGES-MINPOSTEL/
 │   ├── package.json               # Dépendances
 │   ├── .env.example               # Template env
 │   ├── .gitignore
-│   └── README.md                  # 📖 Guide démarrage backend
+│   └── README.md                  #  Guide démarrage backend
 │
 ├── frontend/                                  # À CRÉER
 │   ├── src/
@@ -49,9 +49,9 @@ SIGES-MINPOSTEL/
 │   ├── package.json
 │   └── README.md
 │
-├── API-CONTRACTS.md               # 📋 Contrats JSON complets
-├── SYNC-FRONTEND-BACKEND.md       # 🔄 Checklist coordination
-└── README.md                      # 📖 Guide projet global
+├── API-CONTRACTS.md               #  Contrats JSON complets
+├── SYNC-FRONTEND-BACKEND.md       #  Checklist coordination
+└── README.md                      #  Guide projet global
 ```
 
 ---
@@ -100,7 +100,7 @@ SIGES-MINPOSTEL/
 
 ---
 
-### Frontend - À CRÉER 🚀
+### Frontend - À CRÉER 
 
 **Pages à implémenter:**
 - [ ] Login / Register
@@ -113,7 +113,7 @@ SIGES-MINPOSTEL/
 
 ---
 
-## 🚀 Démarrage Rapide
+##  Démarrage Rapide
 
 ### Backend
 
@@ -131,7 +131,7 @@ mysql -u root -p < scripts/init-db.sql
 
 # 4. Démarrer
 npm run dev
-# 🚀 Serveur SIGES-MINPOSTEL démarré sur le port 5000
+#  Serveur SIGES-MINPOSTEL démarré sur le port 5000
 ```
 
 ### Frontend (À faire)
@@ -147,7 +147,7 @@ npm run dev
 
 ---
 
-## 📖 Documentation
+##  Documentation
 
 | Document | Contenu |
 |----------|---------|
@@ -158,7 +158,7 @@ npm run dev
 
 ---
 
-## 🔐 Données de test
+##  Données de test
 
 ### Admin par défaut
 - **Email:** `admin@siges-minpostel.cm`
@@ -173,7 +173,7 @@ npm run dev
 
 ---
 
-## 🏗️ Architecture Backend Détaillée
+##  Architecture Backend Détaillée
 
 ### Models (Accès BD)
 ```javascript
@@ -228,7 +228,7 @@ dashboardController.js:
 
 ### Services (Logique métier avancée)
 ```javascript
-creneauService.js ⭐ CRITIQUE
+creneauService.js 
 ├── getHeuresBase()              # 08:00-17:00
 ├── heureToMinutes()             # Conversion
 ├── minutesToHeure()
@@ -245,7 +245,7 @@ notificationService.js
 
 ---
 
-## 🧠 Logique métier clé: CreneauService
+##  Logique métier clé: CreneauService
 
 ### Créneaux horaires
 - **Base:** 08:00, 09:00, 10:00, ..., 17:00 (10 créneaux)
@@ -274,7 +274,7 @@ Créneaux valides:
 
 ---
 
-## 🔗 Stack Technique
+##  Stack Technique
 
 ### Backend
 ```
@@ -300,7 +300,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📊 Endpoints API (Résumé)
+##  Endpoints API 
 
 | Méthode | Endpoint | Auth | Rôle | Status |
 |---------|----------|------|------|--------|
@@ -319,7 +319,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 🛡️ Points de sécurité
+##  Points de sécurité
 
 - [x] Passwords bcryptjs (12 rounds)
 - [x] JWT 8h expiration
@@ -333,7 +333,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📝 Notes pour le Frontend
+##  Notes pour le Frontend
 
 ### AVANT DE COMMENCER
 
@@ -351,8 +351,7 @@ React 18+ ou Vue 3+
 - Erreur 409 sur conflit créneau (cas spécial)
 
 ---
-
-## 🚀 Prochaines étapes
+##  Prochaines étapes
 
 ### Phase 1: Frontend Basic
 - [ ] Setup React/Vue
@@ -376,7 +375,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📞 Support
+##  Support
 
 - **Docs:** Ce README + [`API-CONTRACTS.md`](./API-CONTRACTS.md) + [`backend/README.md`](./backend/README.md)
 - **Tests:** Postman collection à créer
@@ -384,7 +383,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📜 License
+##  License
 
 MIT License - Libre d'utilisation
 
@@ -394,7 +393,7 @@ MIT License - Libre d'utilisation
 **Client:** Ministère des Postes et Télécommunications (Cameroun)  
 **Date:** April 2026  
 **Version:** 1.0.0 (Backend complété)  
-**Statut:** ✅ **Backend 100% prêt - Frontend en development**
+**Statut:**  **Backend 100% prêt - Frontend en development**
 
 ---
 
