@@ -1,10 +1,10 @@
-# 🎉 SIGES-MINPOSTEL - Projet Complet
+ SIGES-MINPOSTEL 
 
-## Résumé du projet
+ Résumé du projet
 
 **SIGES-MINPOSTEL** est une plateforme web de **réservation de salles de réunion** pour le **Ministère des Postes et Télécommunications du Cameroun**.
 
-### 🎯 Objectifs
+###  Objectifs
 
 - ✅ Centraliser la gestion des salles de réunion
 - ✅ Automatiser le processus de réservation
@@ -14,15 +14,15 @@
 
 ---
 
-## 📚 Structure du Projet
+## Structure du Projet
 
 ```
 SIGES-MINPOSTEL/
 ├── .github/
 │   └── agents/
-│       ├── backend-architect.agent.md       # 🏗️ Agent Backend
-│       └── frontend-developer.agent.md      # 🖥️ Agent Frontend
-├── backend/                                  # ← 📍 VOUS ÊTES ICI
+│       ├── backend-architect.agent.md       #  Agent Backend
+│       └── frontend-developer.agent.md      #  Agent Frontend
+├── backend/                                  # ←  VOUS ÊTES ICI
 │   ├── config/                    # Configuration (DB, JWT)
 │   ├── controllers/               # Logique métier
 │   ├── middlewares/               # Auth, validation, rôles
@@ -36,7 +36,7 @@ SIGES-MINPOSTEL/
 │   ├── package.json               # Dépendances
 │   ├── .env.example               # Template env
 │   ├── .gitignore
-│   └── README.md                  # 📖 Guide démarrage backend
+│   └── README.md                  #  Guide démarrage backend
 │
 ├── frontend/                                  # À CRÉER
 │   ├── src/
@@ -49,9 +49,9 @@ SIGES-MINPOSTEL/
 │   ├── package.json
 │   └── README.md
 │
-├── API-CONTRACTS.md               # 📋 Contrats JSON complets
-├── SYNC-FRONTEND-BACKEND.md       # 🔄 Checklist coordination
-└── README.md                      # 📖 Guide projet global
+├── API-CONTRACTS.md               #  Contrats JSON complets
+├── SYNC-FRONTEND-BACKEND.md       #  Checklist coordination
+└── README.md                      #  Guide projet global
 ```
 
 ---
@@ -100,7 +100,7 @@ SIGES-MINPOSTEL/
 
 ---
 
-### Frontend - À CRÉER 🚀
+### Frontend - À CRÉER 
 
 **Pages à implémenter:**
 - [ ] Login / Register
@@ -113,7 +113,7 @@ SIGES-MINPOSTEL/
 
 ---
 
-## 🚀 Démarrage Rapide
+##  Démarrage Rapide
 
 ### Backend
 
@@ -131,7 +131,7 @@ mysql -u root -p < scripts/init-db.sql
 
 # 4. Démarrer
 npm run dev
-# 🚀 Serveur SIGES-MINPOSTEL démarré sur le port 5000
+#  Serveur SIGES-MINPOSTEL démarré sur le port 5000
 ```
 
 ### Frontend (À faire)
@@ -147,18 +147,18 @@ npm run dev
 
 ---
 
-## 📖 Documentation
+##  Documentation
 
 | Document | Contenu |
 |----------|---------|
-| [`API-CONTRACTS.md`](./API-CONTRACTS.md) | 📋 Contrats JSON complets - **LIRE AVANT DE CODER** |
-| [`SYNC-FRONTEND-BACKEND.md`](./SYNC-FRONTEND-BACKEND.md) | 🔄 Checklist coordination et points clés |
-| [`backend/README.md`](./backend/README.md) | 📖 Guide complet du backend |
-| [`backend/scripts/init-db.sql`](./backend/scripts/init-db.sql) | 🗄️ Schema MySQL |
+| [`API-CONTRACTS.md`](./API-CONTRACTS.md) |  Contrats JSON complets -  |
+| [`SYNC-FRONTEND-BACKEND.md`](./SYNC-FRONTEND-BACKEND.md) | Checklist coordination et points clés |
+| [`backend/README.md`](./backend/README.md) |  Guide complet du backend |
+| [`backend/scripts/init-db.sql`](./backend/scripts/init-db.sql) | Schema MySQL |
 
 ---
 
-## 🔐 Données de test
+##  Données de test
 
 ### Admin par défaut
 - **Email:** `admin@siges-minpostel.cm`
@@ -173,7 +173,7 @@ npm run dev
 
 ---
 
-## 🏗️ Architecture Backend Détaillée
+##  Architecture Backend Détaillée
 
 ### Models (Accès BD)
 ```javascript
@@ -228,7 +228,7 @@ dashboardController.js:
 
 ### Services (Logique métier avancée)
 ```javascript
-creneauService.js ⭐ CRITIQUE
+creneauService.js 
 ├── getHeuresBase()              # 08:00-17:00
 ├── heureToMinutes()             # Conversion
 ├── minutesToHeure()
@@ -245,7 +245,7 @@ notificationService.js
 
 ---
 
-## 🧠 Logique métier clé: CreneauService
+##  Logique métier clé: CreneauService
 
 ### Créneaux horaires
 - **Base:** 08:00, 09:00, 10:00, ..., 17:00 (10 créneaux)
@@ -262,9 +262,9 @@ Plage bloquée: [08:30, 10:30]
   └─ 10:00 - 10:30  = tampon après
 
 Créneaux invalides:
-  ❌ 08:00 - 09:00  (chevauchement tampon)
-  ❌ 09:00 - 10:00  (occupé)
-  ❌ 10:00 - 11:00  (chevauchement tampon)
+   08:00 - 09:00  (chevauchement tampon)
+   09:00 - 10:00  (occupé)
+   10:00 - 11:00  (chevauchement tampon)
 
 Créneaux valides:
   ✅ 10:30 - 11:30  (juste après tampon)
@@ -274,7 +274,7 @@ Créneaux valides:
 
 ---
 
-## 🔗 Stack Technique
+##  Stack Technique
 
 ### Backend
 ```
@@ -288,7 +288,7 @@ Node.js 18+
 └── helmet/cors          # Sécurité
 ```
 
-### Frontend (À recommander)
+### Frontend 
 ```
 React 18+ ou Vue 3+
 ├── Axios/Fetch API      # HTTP client
@@ -300,7 +300,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📊 Endpoints API (Résumé)
+## Endpoints API (Résumé)
 
 | Méthode | Endpoint | Auth | Rôle | Status |
 |---------|----------|------|------|--------|
@@ -319,7 +319,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 🛡️ Points de sécurité
+##  Points de sécurité
 
 - [x] Passwords bcryptjs (12 rounds)
 - [x] JWT 8h expiration
@@ -333,7 +333,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📝 Notes pour le Frontend
+##  Notes pour le Frontend
 
 ### AVANT DE COMMENCER
 
@@ -352,7 +352,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 🚀 Prochaines étapes
+##  Prochaines étapes
 
 ### Phase 1: Frontend Basic
 - [ ] Setup React/Vue
@@ -376,7 +376,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📞 Support
+##  Support
 
 - **Docs:** Ce README + [`API-CONTRACTS.md`](./API-CONTRACTS.md) + [`backend/README.md`](./backend/README.md)
 - **Tests:** Postman collection à créer
@@ -384,7 +384,7 @@ React 18+ ou Vue 3+
 
 ---
 
-## 📜 License
+##  License
 
 MIT License - Libre d'utilisation
 
@@ -394,8 +394,8 @@ MIT License - Libre d'utilisation
 **Client:** Ministère des Postes et Télécommunications (Cameroun)  
 **Date:** April 2026  
 **Version:** 1.0.0 (Backend complété)  
-**Statut:** ✅ **Backend 100% prêt - Frontend en development**
+**Statut:**  **Backend 100% prêt - Frontend en development**
 
 ---
 
-**🎉 Backend SIGES-MINPOSTEL complet et prêt pour le frontend!**
+** Backend SIGES-MINPOSTEL complet et prêt pour le frontend!**
