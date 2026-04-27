@@ -6,7 +6,7 @@ import AppRouter from './routes/AppRouter';
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_relativeSplatPath: true }}>
       <AuthProvider>
         <SalleProvider>
           <ReservationProvider>

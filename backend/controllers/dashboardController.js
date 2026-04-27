@@ -36,7 +36,7 @@ exports.getStats = async (req, res) => {
         s.id,
         s.nom,
         COUNT(r.id) as reservations_validees,
-        ROUND((COUNT(r.id) :: FLOAT / (SELECT COUNT(*) FROM reservations WHERE statut = 'validee')) * 100, 2) as taux
+        ROUND((COUNT(r.id) / NULLIF((SELECT COUNT(*) FROM reservations WHERE statut = 'validee'), 0)) * 100, 2) as taux
       FROM salles s
       LEFT JOIN reservations r ON s.id = r.salle_id AND r.statut = 'validee'
       GROUP BY s.id, s.nom
@@ -52,6 +52,19 @@ exports.getStats = async (req, res) => {
       WHERE date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
       GROUP BY DATE_FORMAT(date, '%Y-%m-%d')
       ORDER BY date ASC
+    `);
+
+    // Réservations par salle (7 derniers jours)
+    const [reservationsParSalle7j] = await connection.execute(`
+      SELECT 
+        s.id,
+        s.nom,
+        COUNT(r.id) as reservations_count
+      FROM salles s
+      LEFT JOIN reservations r ON s.id = r.salle_id 
+        AND r.date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+      GROUP BY s.id, s.nom
+      ORDER BY reservations_count DESC
     `);
 
     // Répartition des statuts
@@ -74,6 +87,7 @@ exports.getStats = async (req, res) => {
         refusees_ce_mois: statsRefusees[0].count,
         taux_occupation_par_salle: occupationParSalle,
         reservations_par_jour_7j: reservationsParJour,
+        reservations_par_salle_7j: reservationsParSalle7j,
         repartition_statuts: repartitionStatuts[0]
       }
     });

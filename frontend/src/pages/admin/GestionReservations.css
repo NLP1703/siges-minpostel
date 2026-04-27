@@ -1,0 +1,18 @@
+.gestion-reservations-page {
+  padding: 1.5rem;
+}
+
+.filters-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filters-bar select,
+.filters-bar input {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+}

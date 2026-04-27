@@ -1,0 +1,95 @@
+.graphique-barres {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.graphique-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.barres-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 200px;
+  padding-top: 1rem;
+}
+
+.barre-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.barre-bar-container {
+  height: 160px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.barre-bar {
+  width: 40px;
+  background: linear-gradient(180deg, #007A5E 0%, #009B76 100%);
+  border-radius: 6px 6px 0 0;
+  position: relative;
+  min-height: 20px;
+  transition: height 0.5s ease;
+  animation: growBar 0.8s ease forwards;
+  opacity: 0;
+}
+
+@keyframes growBar {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.barre-value {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #1f2937;
+}
+
+.barre-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .barres-container {
+    height: 150px;
+  }
+  
+  .barre-bar-container {
+    height: 120px;
+  }
+  
+  .barre-bar {
+    width: 30px;
+  }
+}

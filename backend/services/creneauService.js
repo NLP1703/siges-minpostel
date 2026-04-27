@@ -53,7 +53,7 @@ class CreneauService {
    * @param {string} heureFin Format "HH:MM"
    * @returns {Promise<{disponible: boolean, conflit?: object}>}
    */
-  async verifierDisponibilite(salleId, date, heureDebut, heureFin) {
+  async verifierDisponibilite(salleId, date, heureDebut, heureFin, excludeReservationId = null) {
     try {
       // Récupérer toutes les réservations en attente ou validées
       const query = `
@@ -76,15 +76,18 @@ class CreneauService {
 
       // Vérifier chaque réservation existante
       for (const reservation of existingReservations) {
+        // Ignorer la réservation en cours de modification
+        if (excludeReservationId && reservation.id === excludeReservationId) continue;
+
         const existDebutMin = this.heureToMinutes(reservation.heure_debut);
         const existFinMin = this.heureToMinutes(reservation.heure_fin);
 
         // Plage bloquée : [debut - 30min, fin + 30min]
         const plageBloqueeDebut = existDebutMin - marge;
-        const plageBloqueeF&#105;n = existFinMin + marge;
+        const plageBloqueeFin = existFinMin + marge;
 
         // Chevauchement si : debut_new < fin_bloquee ET fin_new > debut_bloquee
-        const chevauchement = debutMin < plageBloqueeF&#105;n && finMin > plageBloqueeDebut;
+        const chevauchement = debutMin < plageBloqueeFin && finMin > plageBloqueeDebut;
 
         if (chevauchement) {
           return {

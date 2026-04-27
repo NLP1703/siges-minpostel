@@ -1,0 +1,97 @@
+.calendrier-semaine {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+
+.calendrier-header {
+  display: grid;
+  grid-template-columns: 60px repeat(5, 1fr);
+  gap: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.calendrier-corner {
+  width: 60px;
+}
+
+.calendrier-day-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.calendrier-day-header:hover {
+  background: #f3f4f6;
+}
+
+.calendrier-day-header.selected {
+  background: #007A5E;
+  color: white;
+}
+
+.day-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.day-number {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.calendrier-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calendrier-row {
+  display: grid;
+  grid-template-columns: 60px repeat(5, 1fr);
+  gap: 4px;
+  min-height: 40px;
+}
+
+.calendrier-time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.calendrier-cell {
+  min-height: 40px;
+}
+
+.calendrier-cell .creneau-cell {
+  height: 100%;
+  padding: 0.25rem;
+  font-size: 0.625rem;
+}
+
+@media (max-width: 768px) {
+  .calendrier-header {
+    grid-template-columns: 40px repeat(5, 1fr);
+  }
+  
+  .calendrier-row {
+    grid-template-columns: 40px repeat(5, 1fr);
+  }
+  
+  .calendrier-time {
+    font-size: 0.625rem;
+  }
+}

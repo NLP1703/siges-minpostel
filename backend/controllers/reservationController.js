@@ -103,6 +103,92 @@ exports.create = async (req, res) => {
   }
 };
 
+exports.modifier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { salle_id, date, heure_debut, heure_fin, objet, nb_participants } = req.body;
+
+    const reservation = await ReservationModel.findById(id);
+    if (!reservation) {
+      throw new ApiError('Réservation non trouvée', 404);
+    }
+
+    // Vérifier propriété (utilisateur ne peut modifier que ses propres réservations)
+    if (req.user.role === 'user' && reservation.utilisateur_id !== req.user.id) {
+      throw new ApiError('Accès refusé', 403);
+    }
+
+    // Seules les réservations en attente peuvent être modifiées
+    if (reservation.statut !== 'en_attente') {
+      throw new ApiError('Seules les réservations en attente peuvent être modifiées', 400);
+    }
+
+    // Déterminer les valeurs effectives (anciennes ou nouvelles)
+    const salleId = salle_id !== undefined ? salle_id : reservation.salle_id;
+    const dateRes = date !== undefined ? date : reservation.date;
+    const heureDeb = heure_debut !== undefined ? heure_debut : reservation.heure_debut;
+    const heureFin = heure_fin !== undefined ? heure_fin : reservation.heure_fin;
+    const nbPart = nb_participants !== undefined ? nb_participants : reservation.nb_participants;
+
+    // Vérifier que la salle existe
+    const salle = await SalleModel.findById(salleId);
+    if (!salle) {
+      throw new ApiError('Salle non trouvée', 404);
+    }
+
+    // Valider les paramètres
+    const validation = creneauService.validerParametresReservation({
+      date: dateRes,
+      heureDeb,
+      heureFin,
+      nbParticipants: nbPart,
+      capaciteSalle: salle.capacite
+    });
+
+    if (!validation.valid) {
+      throw new ApiError(validation.error, 400);
+    }
+
+    // Vérifier la disponibilité (en excluant la réservation actuelle)
+    const disponibilite = await creneauService.verifierDisponibilite(
+      salleId,
+      dateRes,
+      heureDeb,
+      heureFin,
+      parseInt(id)
+    );
+
+    if (!disponibilite.disponible) {
+      res.status(409).json({
+        success: false,
+        message: disponibilite.conflit.message,
+        type: 'CONFLICT',
+        conflit: disponibilite.conflit
+      });
+      return;
+    }
+
+    // Mettre à jour la réservation
+    const updateData = {};
+    if (salle_id !== undefined) updateData.salle_id = salle_id;
+    if (date !== undefined) updateData.date = date;
+    if (heure_debut !== undefined) updateData.heure_debut = heure_debut;
+    if (heure_fin !== undefined) updateData.heure_fin = heure_fin;
+    if (objet !== undefined) updateData.objet = objet;
+    if (nb_participants !== undefined) updateData.nb_participants = nb_participants;
+
+    const reservationMaj = await ReservationModel.update(id, updateData);
+
+    res.json({
+      success: true,
+      message: 'Réservation modifiée',
+      reservation: reservationMaj
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 exports.valider = async (req, res) => {
   try {
     const { id } = req.params;

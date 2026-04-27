@@ -1,0 +1,101 @@
+.dashboard-page {
+  padding: 1.5rem;
+}
+
+.page-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-section {
+  margin-bottom: 2rem;
+}
+
+.dashboard-section h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.dashboard-empty {
+  font-family: 'Nunito', sans-serif;
+  color: #6b7280;
+  font-style: italic;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dashboard-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.dashboard-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dashboard-card-salle {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  color: #007A5E;
+  font-size: 1rem;
+}
+
+.dashboard-card-date {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.dashboard-card-time {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.dashboard-card-objet {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8125rem;
+  color: #9ca3af;
+}
+
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #007A5E;
+  color: white;
+  border: none;
+  font-size: 1.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,122,94,0.35);
+  transition: transform 0.2s;
+}
+
+.fab:hover {
+  transform: scale(1.08);
+}

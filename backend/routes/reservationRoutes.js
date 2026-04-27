@@ -37,6 +37,20 @@ router.put('/:id/refuser', authMiddleware, checkRole('admin'),
   reservationController.refuser
 );
 
+// PUT /api/reservations/:id (user propriétaire, en_attente uniquement)
+router.put('/:id', authMiddleware,
+  [
+    body('salle_id').optional().isInt({ min: 1 }).withMessage('salle_id invalide'),
+    body('date').optional().matches(/^\d{4}-\d{2}-\d{2}$/).withMessage('Format date invalide (YYYY-MM-DD)'),
+    body('heure_debut').optional().matches(/^\d{2}:\d{2}$/).withMessage('Format heure_debut invalide (HH:MM)'),
+    body('heure_fin').optional().matches(/^\d{2}:\d{2}$/).withMessage('Format heure_fin invalide (HH:MM)'),
+    body('objet').optional().trim().isLength({ min: 3 }).withMessage('L\'objet doit contenir au minimum 3 caractères'),
+    body('nb_participants').optional().isInt({ min: 1 }).withMessage('nb_participants doit être au minimum 1')
+  ],
+  handleValidationErrors,
+  reservationController.modifier
+);
+
 // DELETE /api/reservations/:id (user propriétaire)
 router.delete('/:id', authMiddleware, reservationController.supprimer);
 

@@ -172,6 +172,59 @@ class ReservationModel {
   }
 
   /**
+   * Met à jour une réservation (champs modifiables)
+   */
+  async update(id, reservationData) {
+    const fields = [];
+    const params = [];
+
+    if (reservationData.salle_id !== undefined) {
+      fields.push('salle_id = ?');
+      params.push(reservationData.salle_id);
+    }
+    if (reservationData.date !== undefined) {
+      fields.push('date = ?');
+      params.push(reservationData.date);
+    }
+    if (reservationData.heure_debut !== undefined) {
+      fields.push('heure_debut = ?');
+      params.push(reservationData.heure_debut);
+    }
+    if (reservationData.heure_fin !== undefined) {
+      fields.push('heure_fin = ?');
+      params.push(reservationData.heure_fin);
+    }
+    if (reservationData.objet !== undefined) {
+      fields.push('objet = ?');
+      params.push(reservationData.objet);
+    }
+    if (reservationData.nb_participants !== undefined) {
+      fields.push('nb_participants = ?');
+      params.push(reservationData.nb_participants);
+    }
+
+    if (fields.length === 0) {
+      throw new Error('Aucune donnée à mettre à jour');
+    }
+
+    const query = `
+      UPDATE reservations
+      SET ${fields.join(', ')}, updated_at = NOW()
+      WHERE id = ?
+    `;
+    params.push(id);
+
+    const connection = await pool.getConnection();
+    try {
+      const [result] = await connection.execute(query, params);
+      if (result.affectedRows === 0) return null;
+      return this.findById(id);
+    } finally {
+      connection.release();
+    }
+  }
+
+  /**
    * Change le statut d'une réservation
    */
   async updateStatut(id, nouveauStatut, motifRefus = null) {

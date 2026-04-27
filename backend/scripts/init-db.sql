@@ -1,7 +1,7 @@
 -- scripts/init-db.sql
--- Script d'initialisation de la base de données SIGES-MINPOSTEL
+-- Script d'initialisation de la base de donnees SIGES-MINPOSTEL
 
--- Créer la base de données
+-- Creer la base de donnees
 CREATE DATABASE IF NOT EXISTS siges_minpostel
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
@@ -38,7 +38,7 @@ CREATE TABLE salles (
   INDEX idx_capacite (capacite)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Table réservations
+-- Table reservations
 CREATE TABLE reservations (
   id INT AUTO_INCREMENT PRIMARY KEY,
   utilisateur_id INT NOT NULL,
@@ -60,23 +60,24 @@ CREATE TABLE reservations (
   INDEX idx_date (date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insérer un administrateur par défaut (passwd: AdminMinpostel123)
+-- Inserer un administrateur par defaut (passwd: AdminMinpostel123)
 INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role)
 VALUES (
   'Admin',
   'SIGES',
   'admin@siges-minpostel.cm',
-  '$2a$12$D9aCdnN.E2DZM1dLRUxsP.ZeO/8m2B2D6C0P5X5Q5K5J5H5G5F5E5',
+  '$2a$12$vNcxEWL5kzp60FRQsA9L4OI6RzfRY8tVfq6.2PN/9mewiGMZvJVq2',
   'admin'
 );
 
--- Insérer quelques salles de test
+-- Inserer quelques salles de test
 INSERT INTO salles (nom, capacite, equipements, photo_url) VALUES
-('Salle de Réunion A - 10 places', 10, '["Vidéoprojecteur", "Climatisation", "Table ovale"]', NULL),
-('Salle de Réunion B - 20 places', 20, '["Vidéoprojecteur", "Climatisation", "Tableau blanc", "WiFi"]', NULL),
-('Salle de Conférence - 50 places', 50, '["Écran géant", "Système audio", "Climatisation"]', NULL),
-('Salle Informelle - 5 places', 5, '["WiFi", "Canapé"]', NULL);
+('Salle de Reunion A - 10 places', 10, '["Videoprojecteur", "Climatisation", "Table ovale"]', NULL),
+('Salle de Reunion B - 20 places', 20, '["Videoprojecteur", "Climatisation", "Tableau blanc", "WiFi"]', NULL),
+('Salle de Conference - 50 places', 50, '["Ecran geant", "Systeme audio", "Climatisation"]', NULL),
+('Salle Informelle - 5 places', 5, '["WiFi", "Canape"]', NULL);
 
--- Afficher les tables créées
-SELECT '✅ Base de données initialisée avec succès !' as Message;
+-- Afficher les tables creees
+SELECT 'Base de donnees initialisee avec succes !' as Message;
 SHOW TABLES;
+

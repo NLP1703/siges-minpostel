@@ -1,0 +1,23 @@
+.page-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-body {
+  display: flex;
+  flex: 1;
+}
+
+.page-main {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .page-main {
+    padding: 1rem;
+  }
+}
