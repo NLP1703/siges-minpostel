@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 #  SIGES-MINPOSTEL - Projet Complet
+=======
+ SIGES-MINPOSTEL 
+>>>>>>> 99a32619773915d6bf1824462540513c8865217a
 
-## Résumé du projet
+ Résumé du projet
 
 **SIGES-MINPOSTEL** est une plateforme web de **réservation de salles de réunion** pour le **Ministère des Postes et Télécommunications du Cameroun**.
 
@@ -14,13 +18,21 @@
 
 ---
 
+<<<<<<< HEAD
 ##  Structure du Projet
+=======
+## Structure du Projet
+>>>>>>> 99a32619773915d6bf1824462540513c8865217a
 
 ```
 SIGES-MINPOSTEL/
 ├── .github/
 │   └── agents/
+<<<<<<< HEAD
 │       ├── backend-architect.agent.md       # Agent Backend
+=======
+│       ├── backend-architect.agent.md       #  Agent Backend
+>>>>>>> 99a32619773915d6bf1824462540513c8865217a
 │       └── frontend-developer.agent.md      #  Agent Frontend
 ├── backend/                                  # ←  VOUS ÊTES ICI
 │   ├── config/                    # Configuration (DB, JWT)
@@ -151,10 +163,10 @@ npm run dev
 
 | Document | Contenu |
 |----------|---------|
-| [`API-CONTRACTS.md`](./API-CONTRACTS.md) | 📋 Contrats JSON complets - **LIRE AVANT DE CODER** |
-| [`SYNC-FRONTEND-BACKEND.md`](./SYNC-FRONTEND-BACKEND.md) | 🔄 Checklist coordination et points clés |
-| [`backend/README.md`](./backend/README.md) | 📖 Guide complet du backend |
-| [`backend/scripts/init-db.sql`](./backend/scripts/init-db.sql) | 🗄️ Schema MySQL |
+| [`API-CONTRACTS.md`](./API-CONTRACTS.md) |  Contrats JSON complets -  |
+| [`SYNC-FRONTEND-BACKEND.md`](./SYNC-FRONTEND-BACKEND.md) | Checklist coordination et points clés |
+| [`backend/README.md`](./backend/README.md) |  Guide complet du backend |
+| [`backend/scripts/init-db.sql`](./backend/scripts/init-db.sql) | Schema MySQL |
 
 ---
 
@@ -262,9 +274,9 @@ Plage bloquée: [08:30, 10:30]
   └─ 10:00 - 10:30  = tampon après
 
 Créneaux invalides:
-  ❌ 08:00 - 09:00  (chevauchement tampon)
-  ❌ 09:00 - 10:00  (occupé)
-  ❌ 10:00 - 11:00  (chevauchement tampon)
+   08:00 - 09:00  (chevauchement tampon)
+   09:00 - 10:00  (occupé)
+   10:00 - 11:00  (chevauchement tampon)
 
 Créneaux valides:
   ✅ 10:30 - 11:30  (juste après tampon)
@@ -288,7 +300,7 @@ Node.js 18+
 └── helmet/cors          # Sécurité
 ```
 
-### Frontend (À recommander)
+### Frontend 
 ```
 React 18+ ou Vue 3+
 ├── Axios/Fetch API      # HTTP client
@@ -300,7 +312,11 @@ React 18+ ou Vue 3+
 
 ---
 
+<<<<<<< HEAD
 ##  Endpoints API 
+=======
+## Endpoints API (Résumé)
+>>>>>>> 99a32619773915d6bf1824462540513c8865217a
 
 | Méthode | Endpoint | Auth | Rôle | Status |
 |---------|----------|------|------|--------|
@@ -351,6 +367,10 @@ React 18+ ou Vue 3+
 - Erreur 409 sur conflit créneau (cas spécial)
 
 ---
+<<<<<<< HEAD
+=======
+
+>>>>>>> 99a32619773915d6bf1824462540513c8865217a
 ##  Prochaines étapes
 
 ### Phase 1: Frontend Basic
@@ -397,4 +417,4 @@ MIT License - Libre d'utilisation
 
 ---
 
-**🎉 Backend SIGES-MINPOSTEL complet et prêt pour le frontend!**
+** Backend SIGES-MINPOSTEL complet et prêt pour le frontend!**

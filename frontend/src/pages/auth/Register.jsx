@@ -9,6 +9,7 @@ export function Register() {
     nom: '',
     prenom: '',
     email: '',
+    telephone: '',
     motDePasse: '',
     confirmMotDePasse: ''
   });
@@ -26,6 +27,10 @@ export function Register() {
       newErrors.email = 'L\'email est obligatoire';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = 'Email invalide';
+    }
+    // Validation du téléphone camerounais (optionnel)
+    if (form.telephone && !/^(237|00237)?[6-9][0-9]{8}$/.test(form.telephone.replace(/\s/g, ''))) {
+      newErrors.telephone = 'Numéro de téléphone invalide (ex: 6XX XXX XX XX)';
     }
     if (!form.motDePasse) {
       newErrors.motDePasse = 'Le mot de passe est obligatoire';
@@ -62,6 +67,7 @@ export function Register() {
         nom: form.nom,
         prenom: form.prenom,
         email: form.email,
+        telephone: form.telephone,
         motDePasse: form.motDePasse
       });
       setSuccess('Compte cree avec succes ! Redirection...');
@@ -106,6 +112,13 @@ export function Register() {
             <input id="email" name="email" type="email" value={form.email} onChange={handleChange}
               placeholder="votre@email.cm" className={errors.email ? 'auth-input-error' : ''} />
             {errors.email && <span className="auth-error-text">{errors.email}</span>}
+          </div>
+
+          <div className="auth-field">
+            <label htmlFor="telephone">Telephone (optionnel)</label>
+            <input id="telephone" name="telephone" type="tel" value={form.telephone} onChange={handleChange}
+              placeholder="6XX XXX XX XX" className={errors.telephone ? 'auth-input-error' : ''} />
+            {errors.telephone && <span className="auth-error-text">{errors.telephone}</span>}
           </div>
 
           <div className="auth-field">

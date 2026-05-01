@@ -21,6 +21,22 @@ export function GestionSalles() {
   const [showForm, setShowForm] = useState(false);
   const [editingSalle, setEditingSalle] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [photoPreviewError, setPhotoPreviewError] = useState(false);
+
+  // Validation stricte de l'URL (reject data:image et URLs invalides)
+  const isValidPhotoUrl = (url) => {
+    if (!url || typeof url !== 'string') return false;
+    const trimmed = url.trim();
+    if (!trimmed) return false;
+    // Rejeter les URLs data:image (base64 inline)
+    if (trimmed.toLowerCase().startsWith('data:')) return false;
+    try {
+      const parsed = new URL(trimmed);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
 
   const [form, setForm] = useState({
     nom: '',
@@ -71,6 +87,15 @@ export function GestionSalles() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    
+    // Validation stricte de l'URL de la photo (reject data:image)
+    if (form.photo_url && form.photo_url.trim()) {
+      if (!isValidPhotoUrl(form.photo_url)) {
+        setError('URL invalide. Utilisez une URL HTTPS externe (ex: https://exemple.com/image.jpg). Les images embeddées (data:image) ne sont pas supportées.');
+        return;
+      }
+    }
+    
     try {
       if (editingSalle) {
         await sallesApi.update(editingSalle.id, form);
@@ -164,7 +189,19 @@ export function GestionSalles() {
           ),
           React.createElement('div', { className: 'form-field' },
             React.createElement('label', null, 'URL Photo'),
-            React.createElement('input', { value: form.photo_url, onChange: e => setForm({ ...form, photo_url: e.target.value }) })
+            React.createElement('input', { value: form.photo_url, onChange: e => { setForm({ ...form, photo_url: e.target.value }); setPhotoPreviewError(false); }, placeholder: 'https://exemple.com/image.jpg' }),
+            form.photo_url && React.createElement('div', { className: 'image-preview', style: { marginTop: '0.5rem' } },
+              !photoPreviewError ? (
+                React.createElement('img', { 
+                  src: form.photo_url, 
+                  alt: 'Apercu', 
+                  style: { maxWidth: '100%', maxHeight: '120px', borderRadius: '8px', objectFit: 'cover' },
+                  onError: () => setPhotoPreviewError(true)
+                })
+              ) : (
+                React.createElement('div', { style: { padding: '1rem', background: '#fee2e2', color: '#991b1b', borderRadius: '8px', fontSize: '0.875rem' } }, '⚠️ Image invalide ou inaccessible')
+              )
+            )
           ),
           React.createElement('div', { className: 'form-field' },
             React.createElement('label', null, 'Equipements'),

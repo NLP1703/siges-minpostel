@@ -12,6 +12,14 @@ import './NouvReservation.css';
 
 const STEPS = ['Choisir une salle', 'Choisir un creneau', 'Confirmer'];
 
+const EQUIPEMENTS_DISPONIBLES = [
+  { id: 'videoprojecteur', label: 'Vidéoprojecteur' },
+  { id: 'tableau_blanc', label: 'Tableau blanc' },
+  { id: 'climatisation', label: 'Climatisation' },
+  { id: 'microphone', label: 'Microphone' },
+  { id: 'visioconference', label: 'Visioconférence' }
+];
+
 export function NouvReservation() {
   const [step, setStep] = useState(0);
   const [salles, setSalles] = useState([]);
@@ -22,6 +30,7 @@ export function NouvReservation() {
   const [heureFin, setHeureFin] = useState(null);
   const [objet, setObjet] = useState('');
   const [nbParticipants, setNbParticipants] = useState(1);
+  const [equipements, setEquipements] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchingSalles, setFetchingSalles] = useState(true);
   const [error, setError] = useState('');
@@ -74,7 +83,8 @@ export function NouvReservation() {
         heure_debut: heureDebut,
         heure_fin: heureFin,
         objet,
-        nb_participants: parseInt(nbParticipants)
+        nb_participants: parseInt(nbParticipants),
+        equipements: equipements
       });
       setShowConfirm(true);
     } catch (err) {
@@ -187,12 +197,36 @@ export function NouvReservation() {
                 onChange={e => setNbParticipants(e.target.value)}
               />
             </div>
+            <div className="form-field">
+              <label>Equipements souhaites (optionnel)</label>
+              <div className="equipements-grid">
+                {EQUIPEMENTS_DISPONIBLES.map(eq => (
+                  <label key={eq.id} className="equipement-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={equipements.includes(eq.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setEquipements([...equipements, eq.id]);
+                        } else {
+                          setEquipements(equipements.filter(id => id !== eq.id));
+                        }
+                      }}
+                    />
+                    <span>{eq.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
             <div className="reservation-recap">
               <h3>Recapitulatif</h3>
               <p><strong>Salle : </strong>{selectedSalle?.nom}</p>
               <p><strong>Date : </strong>{selectedDate}</p>
               <p><strong>Horaire : </strong>{heureDebut} - {heureFin}</p>
               <p><strong>Participants : </strong>{nbParticipants}</p>
+              {equipements.length > 0 && (
+                <p><strong>Equipements : </strong>{equipements.map(id => EQUIPEMENTS_DISPONIBLES.find(e => e.id === id)?.label).join(', ')}</p>
+              )}
               <p><strong>Objet : </strong>{objet}</p>
             </div>
           </div>

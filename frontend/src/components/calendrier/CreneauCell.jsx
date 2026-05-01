@@ -8,8 +8,8 @@ export function CreneauCell({ heure, statut, selected, onClick }) {
   };
 
   const statutTooltips = {
-    libre: 'Creaneau disponible',
-    occupe: 'Salle occupee',
+    libre: 'Créneau disponible',
+    occupe: 'Salle occupée',
     tampon: 'Marge de 30 min requise'
   };
 

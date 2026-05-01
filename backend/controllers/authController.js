@@ -6,7 +6,7 @@ const jwtConfig = require('../config/jwt');
 
 exports.register = async (req, res) => {
   try {
-    const { nom, prenom, email, motDePasse } = req.body;
+    const { nom, prenom, email, telephone, motDePasse } = req.body;
 
     // Vérifier si l'email existe déjà
     const utilisateurExistant = await UtilisateurModel.findByEmail(email);
@@ -19,6 +19,7 @@ exports.register = async (req, res) => {
       nom,
       prenom,
       email,
+      telephone,
       motDePasse
     });
 
@@ -80,6 +81,7 @@ exports.login = async (req, res) => {
         nom: utilisateur.nom,
         prenom: utilisateur.prenom,
         email: utilisateur.email,
+        telephone: utilisateur.telephone,
         role: utilisateur.role
       }
     });
@@ -99,6 +101,67 @@ exports.me = async (req, res) => {
     res.json({
       success: true,
       user: utilisateur
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+exports.updateMe = async (req, res) => {
+  try {
+    const { nom, prenom, telephone } = req.body;
+    const userId = req.user.id;
+
+    // Vérifier que l'utilisateur existe
+    const utilisateur = await UtilisateurModel.findById(userId);
+    if (!utilisateur) {
+      throw new ApiError('Utilisateur non trouvé', 404);
+    }
+
+    // Mettre à jour uniquement les champs fournis
+    const updateData = {};
+    if (nom !== undefined) updateData.nom = nom;
+    if (prenom !== undefined) updateData.prenom = prenom;
+    if (telephone !== undefined) updateData.telephone = telephone;
+
+    const utilisateurMisAJour = await UtilisateurModel.update(userId, updateData);
+
+    res.json({
+      success: true,
+      message: 'Profil mis à jour',
+      user: utilisateurMisAJour
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+exports.updateMyPassword = async (req, res) => {
+  try {
+    const { motDePasseActuel, nouveauMotDePasse } = req.body;
+    const userId = req.user.id;
+
+    // Récupérer l'utilisateur actuel
+    const utilisateur = await UtilisateurModel.findById(userId);
+    if (!utilisateur) {
+      throw new ApiError('Utilisateur non trouvé', 404);
+    }
+
+    // Vérifier le mot de passe actuel
+    const motDePasseValide = await UtilisateurModel.verifierMotDePasse(
+      motDePasseActuel,
+      utilisateur.mot_de_passe
+    );
+    if (!motDePasseValide) {
+      throw new ApiError('Mot de passe actuel incorrect', 401);
+    }
+
+    // Mettre à jour le mot de passe
+    await UtilisateurModel.updatePassword(userId, nouveauMotDePasse);
+
+    res.json({
+      success: true,
+      message: 'Mot de passe mis à jour'
     });
   } catch (error) {
     handleError(res, error);

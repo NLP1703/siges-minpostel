@@ -36,9 +36,16 @@ export function CalendrierSemaine({
   const getCreneauStatus = (jourIndex, heure) => {
     const date = weekDates[jourIndex].date;
     const res = reservations.find(r => {
-      const resDate = r.date || r.date_reservation;
-      const debut = r.heure_debut;
-      const fin = r.heure_fin;
+      // Normaliser la date (MySQL retourne parfois un objet Date)
+      let resDate = r.date || r.date_reservation;
+      if (resDate instanceof Date) {
+        resDate = resDate.toISOString().split('T')[0];
+      } else if (typeof resDate === 'string' && resDate.includes('T')) {
+        resDate = resDate.split('T')[0];
+      }
+      // Normaliser les heures (tronquer les secondes si présentes)
+      const debut = (r.heure_debut || '').toString().substring(0, 5);
+      const fin = (r.heure_fin || '').toString().substring(0, 5);
       return resDate === date && heure >= debut && heure < fin;
     });
     

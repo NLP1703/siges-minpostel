@@ -13,13 +13,14 @@ class ReservationModel {
       heureDebut,
       heureFin,
       objet,
-      nbParticipants
+      nbParticipants,
+      equipements
     } = reservationData;
 
     const query = `
       INSERT INTO reservations 
-        (utilisateur_id, salle_id, date, heure_debut, heure_fin, objet, nb_participants, statut)
-      VALUES (?, ?, ?, ?, ?, ?, ?, 'en_attente')
+        (utilisateur_id, salle_id, date, heure_debut, heure_fin, objet, nb_participants, equipements, statut)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'en_attente')
     `;
 
     const connection = await pool.getConnection();
@@ -31,7 +32,8 @@ class ReservationModel {
         heureDebut,
         heureFin,
         objet,
-        nbParticipants
+        nbParticipants,
+        JSON.stringify(equipements || [])
       ]);
 
       return {
@@ -43,6 +45,7 @@ class ReservationModel {
         heure_fin: heureFin,
         objet,
         nb_participants: nbParticipants,
+        equipements: equipements || [],
         statut: 'en_attente',
         created_at: new Date()
       };
@@ -117,6 +120,18 @@ class ReservationModel {
       params.push(filters.date);
     }
 
+    // Filter by date range
+    if (filters.dateDebut && filters.dateFin) {
+      query += ` AND r.date >= ? AND r.date <= ?`;
+      params.push(filters.dateDebut, filters.dateFin);
+    } else if (filters.dateDebut) {
+      query += ` AND r.date >= ?`;
+      params.push(filters.dateDebut);
+    } else if (filters.dateFin) {
+      query += ` AND r.date <= ?`;
+      params.push(filters.dateFin);
+    }
+
     query += ` ORDER BY r.date DESC, r.heure_debut ASC`;
 
     // Pagination
@@ -153,6 +168,16 @@ class ReservationModel {
       if (filters.date) {
         countQuery += ` AND r.date = ?`;
         countParams.push(filters.date);
+      }
+      if (filters.dateDebut && filters.dateFin) {
+        countQuery += ` AND r.date >= ? AND r.date <= ?`;
+        countParams.push(filters.dateDebut, filters.dateFin);
+      } else if (filters.dateDebut) {
+        countQuery += ` AND r.date >= ?`;
+        countParams.push(filters.dateDebut);
+      } else if (filters.dateFin) {
+        countQuery += ` AND r.date <= ?`;
+        countParams.push(filters.dateFin);
       }
 
       const [countRows] = await connection.execute(countQuery, countParams);
@@ -266,3 +291,4 @@ class ReservationModel {
 }
 
 module.exports = new ReservationModel();
+

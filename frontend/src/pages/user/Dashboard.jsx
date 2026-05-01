@@ -7,9 +7,25 @@ import { CalendrierSemaine } from '../../components/calendrier/CalendrierSemaine
 import { getTodayISO, formatDisplayDate } from '../../utils/formatDate';
 import './Dashboard.css';
 
+// Helper function to get the Monday of the current week
+const getWeekDates = () => {
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+  
+  const dates = [];
+  for (let i = 0; i < 5; i++) {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
+    dates.push(date.toISOString().split('T')[0]);
+  }
+  return dates;
+};
+
 export function Dashboard() {
   const [todayReservations, setTodayReservations] = useState([]);
-  const [upcomingReservations, setUpcomingReservations] = useState([]);
+  const [weekReservations, setWeekReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(getTodayISO());
   const navigate = useNavigate();
@@ -18,12 +34,19 @@ export function Dashboard() {
     const fetchData = async () => {
       try {
         const today = getTodayISO();
-        const [todayRes, upcomingRes] = await Promise.all([
-          reservationsApi.getAll({ date: today, limit: 10 }),
-          reservationsApi.getAll({ page: 1, limit: 5 })
-        ]);
+        const weekDates = getWeekDates();
+        
+        // Fetch today's reservations
+        const todayRes = await reservationsApi.getAll({ date: today, limit: 10 });
         setTodayReservations(todayRes.data.data?.data || []);
-        setUpcomingReservations(upcomingRes.data.data?.data || []);
+        
+        // Fetch all reservations for the current week
+        const weekRes = await reservationsApi.getAll({ 
+          date_debut: weekDates[0], 
+          date_fin: weekDates[4],
+          limit: 100
+        });
+        setWeekReservations(weekRes.data.data?.data || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -61,11 +84,11 @@ export function Dashboard() {
 
       <section className="dashboard-section">
         <h2>Prochaines reservations</h2>
-        {upcomingReservations.length === 0 ? (
+        {weekReservations.length === 0 ? (
           <p className="dashboard-empty">Aucune reservation a venir</p>
         ) : (
           <div className="dashboard-list">
-            {upcomingReservations.slice(0, 5).map(r => (
+            {weekReservations.slice(0, 5).map(r => (
               <div key={r.id} className="dashboard-card">
                 <div className="dashboard-card-info">
                   <span className="dashboard-card-salle">{r.salle_nom}</span>
@@ -83,7 +106,7 @@ export function Dashboard() {
       <section className="dashboard-section">
         <h2>Calendrier de la semaine</h2>
         <CalendrierSemaine 
-          reservations={upcomingReservations}
+          reservations={weekReservations}
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
         />

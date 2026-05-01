@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
     setRole(userData.role);
   }, []);
 
-  // Vérifier le token au chargement
+  // Vérifier le token au chargement - optimisé pour réduire la latence
   useEffect(() => {
     const checkAuth = async () => {
       const storedToken = localStorage.getItem('siges_token');
@@ -38,12 +38,17 @@ export function AuthProvider({ children }) {
           if (decoded.exp * 1000 < Date.now()) {
             logout();
           } else {
+            // Utiliser directement les données du token pour éviter un appel API supplémentaire
             setToken(storedToken);
             setIsAuthenticated(true);
             setRole(decoded.role);
-            // Récupérer les infos utilisateur fraîches
-            const res = await authApi.me();
-            setUser(res.data.user);
+            setUser({
+              id: decoded.id,
+              nom: decoded.nom,
+              prenom: decoded.prenom,
+              email: decoded.email,
+              role: decoded.role
+            });
           }
         } catch (err) {
           logout();

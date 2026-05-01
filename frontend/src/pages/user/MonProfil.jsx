@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { usersApi } from '../../api/usersApi';
+import { authApi } from '../../api/authApi';
 import { AlertMessage } from '../../components/ui/AlertMessage';
 import { Loader } from '../../components/ui/Loader';
 import './MonProfil.css';
@@ -39,7 +39,7 @@ export function MonProfil() {
     setSuccess('');
     
     try {
-      await usersApi.update(user.id, form);
+      await authApi.updateMe(form);
       setSuccess('Profil mis à jour avec succès');
     } catch (err) {
       setError(err.response?.data?.message || 'Erreur lors de la mise à jour');
@@ -66,9 +66,9 @@ export function MonProfil() {
     setSuccess('');
     
     try {
-      await usersApi.updatePassword(user.id, {
-        mot_de_passe_actuel: passwords.actuel,
-        nouveau_mot_de_passe: passwords.nouveau
+      await authApi.updatePassword({
+        motDePasseActuel: passwords.actuel,
+        nouveauMotDePasse: passwords.nouveau
       });
       setSuccess('Mot de passe mis à jour avec succès');
       setPasswords({ actuel: '', nouveau: '', confirmation: '' });

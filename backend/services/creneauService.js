@@ -46,22 +46,23 @@ class CreneauService {
    * Règles :
    * - Pas de chevauchement direct
    * - Marge tampon de 30 min obligatoire avant/après chaque réservation
-   * 
    * @param {number} salleId ID de la salle
    * @param {string} date Date au format "YYYY-MM-DD"
    * @param {string} heureDebut Format "HH:MM"
    * @param {string} heureFin Format "HH:MM"
+   * @param {number|null} excludeReservationId ID de réservation à exclure
    * @returns {Promise<{disponible: boolean, conflit?: object}>}
    */
   async verifierDisponibilite(salleId, date, heureDebut, heureFin, excludeReservationId = null) {
     try {
-      // Récupérer toutes les réservations en attente ou validées
+      // CORRECTION BUG : Ne bloquer que les réservations VALIDÉES
+      // 'en_attente' ne bloque pas les créneaux
       const query = `
         SELECT id, heure_debut, heure_fin, objet, utilisateur_id
         FROM reservations
         WHERE salle_id = ?
           AND date = ?
-          AND statut IN ('en_attente', 'validee')
+          AND statut = 'validee'
         ORDER BY heure_debut ASC
       `;
 
@@ -113,20 +114,20 @@ class CreneauService {
   /**
    * Retourne les créneaux disponibles pour une salle à une date donnée
    * Statuts possibles : "libre", "occupe", "tampon"
-   * 
    * @param {number} salleId ID de la salle
    * @param {string} date Format "YYYY-MM-DD"
    * @returns {Promise<{date: string, salle_id: number, creneaux: Array}>}
    */
   async getCreneauxDisponibles(salleId, date) {
     try {
-      // Récupérer toutes les réservations confirmées/en attente
+      // CORRECTION BUG : Ne bloquer que les réservations VALIDÉES
+      // 'en_attente' et 'refusee' ne bloquent pas les créneaux
       const query = `
         SELECT heure_debut, heure_fin
         FROM reservations
         WHERE salle_id = ?
           AND date = ?
-          AND statut IN ('en_attente', 'validee')
+          AND statut = 'validee'
         ORDER BY heure_debut ASC
       `;
 

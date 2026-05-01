@@ -14,8 +14,31 @@ export function toISODate(date) {
  */
 export function formatDisplayDate(dateStr) {
   if (!dateStr) return '';
-  const [year, month, day] = dateStr.split('-');
-  return `${day}/${month}/${year}`;
+  
+  // Si c'est déjà au format DD/MM/YYYY, le retourner tel quel
+  if (dateStr.includes('/')) return dateStr;
+  
+  // Si c'est un objet Date ou une date avec temps
+  let datePart = dateStr;
+  if (dateStr.includes('T')) {
+    // Format ISO: 2024-01-15T00:00:00.000Z
+    datePart = dateStr.split('T')[0];
+  } else if (dateStr.includes(' ')) {
+    // Format avec espace: 2024-01-15 00:00:00
+    datePart = dateStr.split(' ')[0];
+  }
+  
+  const parts = datePart.split('-');
+  if (parts.length === 3) {
+    const [year, month, day] = parts;
+    // Vérifier que c'est des nombres valides
+    if (!isNaN(parseInt(year)) && !isNaN(parseInt(month)) && !isNaN(parseInt(day))) {
+      return `${day}/${month}/${year}`;
+    }
+  }
+  
+  // Fallback: retourner la chaîne originale
+  return dateStr;
 }
 
 /**

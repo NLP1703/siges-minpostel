@@ -7,15 +7,15 @@ class UtilisateurModel {
    * Crée un nouvel utilisateur
    */
   async creer(utilisateurData) {
-    const { nom, prenom, email, motDePasse } = utilisateurData;
+    const { nom, prenom, email, telephone, motDePasse } = utilisateurData;
     
     // Hacher le mot de passe
     const salt = await bcrypt.genSalt(12);
     const motDePasseHash = await bcrypt.hash(motDePasse, salt);
 
     const query = `
-      INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO utilisateurs (nom, prenom, email, telephone, mot_de_passe)
+      VALUES (?, ?, ?, ?, ?)
     `;
 
     const connection = await pool.getConnection();
@@ -24,6 +24,7 @@ class UtilisateurModel {
         nom,
         prenom,
         email,
+        telephone || null,
         motDePasseHash
       ]);
       
@@ -32,6 +33,7 @@ class UtilisateurModel {
         nom,
         prenom,
         email,
+        telephone: telephone || null,
         role: 'user',
         actif: true,
         created_at: new Date()
@@ -60,7 +62,7 @@ class UtilisateurModel {
    * Récupère un utilisateur par ID
    */
   async findById(id) {
-    const query = `SELECT id, nom, prenom, email, role, actif, created_at, updated_at FROM utilisateurs WHERE id = ?`;
+    const query = `SELECT id, nom, prenom, email, telephone, role, actif, created_at, updated_at FROM utilisateurs WHERE id = ?`;
     
     const connection = await pool.getConnection();
     try {
@@ -154,6 +156,10 @@ class UtilisateurModel {
     if (updateData.email !== undefined) {
       fields.push('email = ?');
       params.push(updateData.email);
+    }
+    if (updateData.telephone !== undefined) {
+      fields.push('telephone = ?');
+      params.push(updateData.telephone);
     }
     if (updateData.role !== undefined) {
       fields.push('role = ?');

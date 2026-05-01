@@ -1,14 +1,20 @@
--- scripts/init-db.sql
--- Script d'initialisation de la base de donnees SIGES-MINPOSTEL
-
--- Creer la base de donnees
-CREATE DATABASE IF NOT EXISTS siges_minpostel
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
+-- Script de restauration complète SIGES-MINPOSTEL
+-- Après suppression manuelle des fichiers .ibd
 
 USE siges_minpostel;
 
--- Table utilisateurs
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Supprimer les tables (les .ibd ont déjà été supprimés manuellement)
+DROP TABLE IF EXISTS reservations;
+DROP TABLE IF EXISTS salles;
+DROP TABLE IF EXISTS utilisateurs;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- ============================================
+-- Étape 1 : Recréer la table utilisateurs
+-- ============================================
 CREATE TABLE utilisateurs (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nom VARCHAR(100) NOT NULL,
@@ -25,7 +31,9 @@ CREATE TABLE utilisateurs (
   INDEX idx_actif (actif)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Table salles
+-- ============================================
+-- Étape 2 : Recréer la table salles
+-- ============================================
 CREATE TABLE salles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nom VARCHAR(150) NOT NULL,
@@ -39,7 +47,9 @@ CREATE TABLE salles (
   INDEX idx_capacite (capacite)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Table reservations
+-- ============================================
+-- Étape 3 : Recréer la table reservations
+-- ============================================
 CREATE TABLE reservations (
   id INT AUTO_INCREMENT PRIMARY KEY,
   utilisateur_id INT NOT NULL,
@@ -62,7 +72,12 @@ CREATE TABLE reservations (
   INDEX idx_date (date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Inserer un administrateur par defaut (passwd: AdminMinpostel123)
+-- ============================================
+-- Étape 4 : Insérer l'administrateur
+-- ============================================
+-- Email    : admin@siges-minpostel.cm
+-- Mot de passe : AdminMinpostel123
+
 INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role)
 VALUES (
   'Admin',
@@ -72,13 +87,14 @@ VALUES (
   'admin'
 );
 
--- Inserer quelques salles de test avec photos
-INSERT INTO salles (nom, capacite, equipements, photo_url) VALUES
-('Salle de Reunion A - 10 places', 10, '["Videoprojecteur", "Climatisation", "Table ovale"]', 'https://th.bing.com/th/id/OIP.Hej1Kd46bZyVv-4O9g-UkgHaF5?w=203&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3'),
-('Salle de Reunion B - 20 places', 20, '["Videoprojecteur", "Climatisation", "Tableau blanc", "WiFi"]', 'https://tse2.mm.bing.net/th/id/OIP.YcHxTIFvScqTCWTWhx9f2QHaE8?rs=1&pid=ImgDetMain&o=7&rm=3'),
-('Salle de Conference - 50 places', 50, '["Ecran geant", "Systeme audio", "Climatisation"]', 'https://tse2.mm.bing.net/th/id/OIP.Cfzln5ouT4ztFtOQhoLTAAHaEP?rs=1&pid=ImgDetMain&o=7&rm=3'),
-('Salle Informelle - 5 places', 5, '["WiFi", "Canape"]', 'https://tse3.mm.bing.net/th/id/OIP.eMna-k4AmlEIOWQkqo2begHaFj?rs=1&pid=ImgDetMain&o=7&rm=3');
+-- ============================================
+-- Étape 5 : Insérer les salles avec photos
+-- ============================================
+INSERT INTO salles (nom, capacite, equipements, photo_url, actif) VALUES
+('Salle de Reunion A - 10 places', 10, '["Videoprojecteur", "Climatisation", "Table ovale"]', 'https://th.bing.com/th/id/OIP.Hej1Kd46bZyVv-4O9g-UkgHaF5?w=203&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3', TRUE),
+('Salle de Reunion B - 20 places', 20, '["Videoprojecteur", "Climatisation", "Tableau blanc", "WiFi"]', 'https://tse2.mm.bing.net/th/id/OIP.YcHxTIFvScqTCWTWhx9f2QHaE8?rs=1&pid=ImgDetMain&o=7&rm=3', TRUE),
+('Salle de Conference - 50 places', 50, '["Ecran geant", "Systeme audio", "Climatisation"]', 'https://tse2.mm.bing.net/th/id/OIP.Cfzln5ouT4ztFtOQhoLTAAHaEP?rs=1&pid=ImgDetMain&o=7&rm=3', TRUE),
+('Salle Informelle - 5 places', 5, '["WiFi", "Canape"]', 'https://tse3.mm.bing.net/th/id/OIP.eMna-k4AmlEIOWQkqo2begHaFj?rs=1&pid=ImgDetMain&o=7&rm=3', TRUE);
 
--- Afficher les tables creees
-SELECT 'Base de donnees initialisee avec succes !' as Message;
+SELECT 'Base de donnees restaurée avec succès !' AS Message;
 SHOW TABLES;

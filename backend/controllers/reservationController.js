@@ -5,6 +5,7 @@ const UtilisateurModel = require('../models/Utilisateur');
 const { ApiError, handleError } = require('../utils/errorHandler');
 const creneauService = require('../services/creneauService');
 const notificationService = require('../services/notificationService');
+const smsService = require('../services/smsService');
 
 exports.getAll = async (req, res) => {
   try {
@@ -18,7 +19,9 @@ exports.getAll = async (req, res) => {
     // Appliquer les filtres optionnels
     if (req.query.statut) filters.statut = req.query.statut;
     if (req.query.date) filters.date = req.query.date;
-    if (req.query.salle_id) filters.salleId = req.query.salle_id;
+    if (req.query.date_debut) filters.dateDebut = req.query.date_debut;
+    if (req.query.date_fin) filters.dateFin = req.query.date_fin;
+    if (req.query.salle_id) filters.salleId = parseInt(req.query.salle_id);
     if (req.query.page) filters.page = parseInt(req.query.page);
     if (req.query.limit) filters.limit = parseInt(req.query.limit);
 
@@ -35,7 +38,7 @@ exports.getAll = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const { salle_id, date, heure_debut, heure_fin, objet, nb_participants } = req.body;
+    const { salle_id, date, heure_debut, heure_fin, objet, nb_participants, equipements } = req.body;
 
     // Vérifier que la salle existe
     const salle = await SalleModel.findById(salle_id);
@@ -82,7 +85,8 @@ exports.create = async (req, res) => {
       heureDebut: heure_debut,
       heureFin: heure_fin,
       objet,
-      nbParticipants: nb_participants
+      nbParticipants: nb_participants,
+      equipements: equipements || []
     });
 
     // Envoyer notification à l'admin
@@ -211,6 +215,9 @@ exports.valider = async (req, res) => {
     
     await notificationService.notifierValidationReservation(utilisateur, reservationMaj, salle);
 
+    // Envoyer SMS à l'utilisateur si numéro de téléphone disponible
+    await smsService.notifierReservationValidee(utilisateur, reservationMaj, salle);
+
     res.json({
       success: true,
       message: 'Réservation validée',
@@ -247,6 +254,9 @@ exports.refuser = async (req, res) => {
     const salle = await SalleModel.findById(reservation.salle_id);
     
     await notificationService.notifierRefusReservation(utilisateur, reservationMaj, salle, motif_refus);
+
+    // Envoyer SMS à l'utilisateur si numéro de téléphone disponible
+    await smsService.notifierReservationRejetee(utilisateur, reservationMaj, salle, motif_refus);
 
     res.json({
       success: true,
